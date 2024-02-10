@@ -1,7 +1,43 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import axios from 'axios'
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 const SignIn = () => {
+    const navigate= useNavigate()
+    const[input,setInput] =new useState(
+        {
+            "Email":"",
+            "Password":""
+
+        }
+    )
+    const inputHandler =(event)=> {
+        setInput({...input,[event.target.name]:event.target.value})
+    }
+    const readValues =() => {
+        console.log(input)
+        axios.post("http://localhost:3001/api/blog/signin",input).then(
+            (response) => {
+                console.log(response.data)
+                if(response.data.status == "success")
+                 {
+                    navigate("/add")
+                    setInput(
+                        {
+                            "Email":"",
+                            "Password":""
+                
+                        }
+                    )
+                 }
+                else
+                    {
+                        alert("error")
+                    }
+            }
+        )
+    }
+            
   return (
     <div>
         <div className="container">
